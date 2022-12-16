@@ -14,8 +14,8 @@ class ProductManager {
         else product.id = this.getProducts().length + 1; this.products.push(product)
     }
 
-    getProductById(product){
-        if (this.getProducts().find((i) => i.id == product.id)) {
+    getProductById(id){
+        if (this.products.find((i) => i.id == id)) {
             return console.log("Este ID existe")
         }
         else console.log("NOT FOUND")
