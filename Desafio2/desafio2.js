@@ -1,4 +1,4 @@
-const fs = require ("node:fs");
+const fs = require ("fs");
 
 class ProductManager {
   productos;
@@ -51,63 +51,62 @@ class ProductManager {
     }
 
     guardarEnArchivo(){
-      try {
-          fs.writeFileSync(this.path, JSON.stringify(this.productos));
-      } catch (err) {
-          throw new Error(err);
-      }
+    
+          fs.writeFileSync(`./${this.path}`, JSON.stringify(this.products), (err) => {
+            throw new Error(err);
+          });
+      
   }
 
   cargarElArchivo() {
       try {
-          this.productos = JSON.parse(fs.readFileSync(this.path,"utf-8"))
+          this.productos = JSON.parse(fs.readFileSync(`./${this.path}`,"utf-8"))
       } catch (err){
           throw new Error (err);
       }
+  }
+
+  updateProduct(id, nuevoProducto){
+    const data = JSON.parse(fs.readFileSync(`./${this.path}`,"utf-8"));
+    data.map((element)=>{
+      if (element.id === id) {
+        element.title = nuevoProducto.title;
+        //hacer lo mismo con todos menos id
+        element.description = nuevoProducto.description;
+        element.price = nuevoProducto.price;
+        element.thumbnail = nuevoProducto.thumbnail;
+        element.code = nuevoProducto.code;
+        element.stock = nuevoProducto.stock;
+        element.id = id
+      }
+    })
+    fs.writeFileSync(`./${this.path}`, JSON.stringify(data));
+  }
+
+  deleteProduct(id) {
+    const vacio = [];
+    this.productos = JSON.parse(fs.readFileSync(`./${this.path}`,"utf-8"));
+    this.productos.map((elemento)=>{
+      if (elemento.id != id) {
+        vacio.push(elemento)
+      }
+    })
+    fs.writeFileSync(`./${this.path}`, JSON.stringify(vacio));
   }
   }
 
 //CREAMOS UNA INSTANCIA
 
-const productManager = new ProductManager("./Desafio2/productos.json");
+const productManager = new ProductManager("productos.json");
 
 //PRODUCTOS
 productManager.addProduct('Pantufla', 'Pantufl Dama Abierta', 1810, 'https://res.cloudinary.com/djjmhiwzd/image/upload/v1669244037/comprimida_VERANO_COMUNES_excqpp.png', 'D-01', 4);
 productManager.addProduct('Zapatillas', 'Zapatillas de hombre', 5000, 'https://res.cloudinary.com/djjmhiwzd/image/upload/v1670891783/vecteezy_sneakers-shoes-clipart-design-illustration_9399188_732_q1sauo.png', 'Zap-4', 65);
 productManager.addProduct('Remeras', 'Remera de hombre', 3200, 'https://res.cloudinary.com/djjmhiwzd/image/upload/v1670891788/vecteezy_isolated-blue-t-shirt_8847305_174_jlde7t.png', 'Rem-3', 56);
 
-const allProducts = productManager.getProducts();
-console.log(allProducts);
-
-const productById = productManager.getProductById(2);
-console.log(productById);
 
 
+productManager.cargarElArchivo();
+productManager.updateProduct(4,'Auto', 'Auto deportivo', 18100605, 'https://res.cloudinary.com/djjmhiwzd/image/upload/v1669244037/comprimida_VERANO_COMUNES_excqpp.png', 'Au-01', 2);
+productManager.deleteProduct(3);
 
-
-
-/*
-    
-//PAra actualizar calculo que se usa el método write debido a que escribe o sobre escribe
-//Como dice que recibe el id y el campo, calculo que debe recibir como argumento el id y el campo productos entero.
-    upDateProduct(id, productos){
-        try {
-            fs.writeFileSync(this.path, JSON.stringify(this.productos));
-        } catch (err) {
-            throw new Error(err);
-        }
-
-    }
-    
-//El método para borrar es unlync, pero el profe explico como borrar un archivo entero, no se como borrar solo una parte de un archivo.
-    deleteProduct(id){
-        fs.unlinkSync("")
-    }
-
-
-}
-
-
-}
-
-*/
