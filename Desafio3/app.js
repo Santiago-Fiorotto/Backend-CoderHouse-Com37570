@@ -1,10 +1,10 @@
 const express = require ("express");
-const ProductManager = require("../desafio2/desafio2");
+const {productManager} = require("../Desafio2/desafio2");
 const app = express();
 const PORT = 8080
 
 
-const productManager = new ProductManager("../desafio2/productos.json" )
+const productManager = new ProductManager("../Desafio2/productos.json" )
 
 app.get("/products", async (req,res) =>{
     const products = await productManager.getProducts();
