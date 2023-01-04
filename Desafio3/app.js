@@ -3,7 +3,7 @@ const {productManager} = require("../Desafio2/desafio2");
 const app = express();
 const PORT = 8080
 
-
+//Esto me marca la consola como que ya existe, pero si lo cambio, no me funciona tampoco
 const productManager = new ProductManager("../Desafio2/productos.json" )
 
 app.get("/products", async (req,res) =>{
