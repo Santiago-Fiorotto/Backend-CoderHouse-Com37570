@@ -1,10 +1,10 @@
 const express = require ("express");
-const {productManager} = require("../Desafio2/desafio2");
+const {productManager} = require ("../Desafio2/desafio2");
 const app = express();
 const PORT = 8080
 
 //Esto me marca la consola como que ya existe, pero si lo cambio, no me funciona tampoco
-const productManager = new ProductManager("../Desafio2/productos.json" )
+//const productManager = new ProductManager("../Desafio2/productos.json" )
 
 app.get("/products", async (req,res) =>{
     const products = await productManager.getProducts();
@@ -17,7 +17,8 @@ app.get("/products", async (req,res) =>{
 app.get("/products/:pid",  async (req,res) =>{
     const products = await productManager.getProducts();
     const {pid} = req.params;
-    const prod = products.find(prod => prod.id === pid);
+    const prod = products.find(prod => parseInt(prod.id) === parseInt( pid ));
+    
 
 
     if (prod) return res.status(200).json(prod);
